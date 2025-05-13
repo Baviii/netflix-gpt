@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import LoginForm from "./LoginForm";
 // import Image from "next/image";
 
 export default function Login() {
@@ -13,6 +14,9 @@ export default function Login() {
         }}
       >
         <Header />
+        <div className="flex justify-center items-center ">
+          <LoginForm />
+        </div>
       </div>
     </>
   );
