@@ -5,6 +5,12 @@ import React, { useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "@/utils/firebase";
+import { toast } from "react-toastify";
 const passwordSchema = z
   .string()
   .min(6, "Min 6 character is required")
@@ -47,6 +53,33 @@ export default function LoginForm() {
   });
   const onSubmit = (data: CombinedFormType) => {
     console.log(signInForm ? "Sign In Data" : "Sign Up Data", data);
+    if (signInForm) {
+      signInWithEmailAndPassword(auth, data.email, data.password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          toast.success("Signed in Sucessfully!");
+          console.log({ user });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          toast.error(` ${errorMessage}`);
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, data.email, data.password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          toast.success("Signed up Sucessfully!");
+          console.log({ user });
+          // ...
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          toast.error(` ${errorMessage}`);
+          // ..
+        });
+    }
     reset();
   };
   return (
