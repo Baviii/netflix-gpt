@@ -1,5 +1,4 @@
 "use client";
-// import { Typography } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
 import z from "zod";
@@ -8,9 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addUser } from "@/utils/userSlice";
 const passwordSchema = z
   .string()
   .min(6, "Min 6 character is required")
@@ -41,7 +44,9 @@ type SignUpFormType = z.infer<typeof signUpSchema>;
 type CombinedFormType = SignInFormType | SignUpFormType;
 
 export default function LoginForm() {
+  const router = useRouter();
   const [signInForm, setSigmnInForm] = useState(true);
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -59,18 +64,39 @@ export default function LoginForm() {
           // Signed in
           const user = userCredential.user;
           toast.success("Signed in Sucessfully!");
+          router.push("/browse");
           console.log({ user });
         })
         .catch((error) => {
           const errorMessage = error.message;
           toast.error(` ${errorMessage}`);
+          router.push("/");
         });
     } else {
       createUserWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
-          toast.success("Signed up Sucessfully!");
+          updateProfile(user, {
+            displayName: "name" in data ? data.name : "",
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              if (auth.currentUser) {
+                const { uid, displayName, email } = auth.currentUser;
+                dispatch(
+                  addUser({ uuid: uid, displayName: displayName, email: email })
+                );
+              } else {
+                toast.error("User not found.");
+              }
+
+              toast.success("Signed up Sucessfully!");
+              router.push("/browse");
+            })
+            .catch((error) => {
+              toast.error(error);
+            });
+
           console.log({ user });
           // ...
         })
