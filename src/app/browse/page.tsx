@@ -4,7 +4,6 @@ import { options } from "@/utils/constant";
 import BannerSection from "../component/BannerSection";
 import MovieWrapper from "../component/MovieWrapper";
 import ClientHeaderWrapper from "../component/ClientHeaderWrapper";
-import GptSearchWrapper from "../component/GptSearchWrapper";
 
 async function fetchMovies(endpoint: string) {
   try {
@@ -34,7 +33,6 @@ export default async function page() {
   return (
     <>
       <ClientHeaderWrapper />
-      <GptSearchWrapper />
       <BannerSection movieList={nowPlaying.results} />
       <MovieWrapper
         nowPlaying={nowPlaying.results}

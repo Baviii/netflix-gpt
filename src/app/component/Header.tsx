@@ -9,7 +9,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Netflix_Logo } from "@/utils/constant";
-// import { toggleGptSearchView } from "@/utils/gptSlice";
 // Adjust the path to your store file
 
 export default function Header() {
