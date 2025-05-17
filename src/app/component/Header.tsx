@@ -8,6 +8,7 @@ import Image from "next/image";
 import React from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Netflix_Logo } from "@/utils/constant";
 // Adjust the path to your store file
 
 export default function Header() {
@@ -19,20 +20,18 @@ export default function Header() {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log("here");
         router.push("/"); // client side navigation
       })
       .catch((error) => {
-        console.log("here1");
         toast.error(error.message || "Sign out failed");
       });
   };
 
   return (
-    <div className="bg-gradient-to-b from-black px-6 py-3 lg:px-8 lg:py-4 w-full justify-between flex">
+    <div className="bg-gradient-to-b from-black px-6 py-3 lg:px-8 lg:py-4 w-full justify-between flex absolute z-20">
       <div className="flex items-center w-fit">
         <Image
-          src="https://help.nflxext.com/helpcenter/OneTrust/oneTrust_production/consent/87b6a5c0-0104-4e96-a291-092c11350111/01938dc4-59b3-7bbc-b635-c4131030e85f/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+          src={Netflix_Logo}
           alt="netflix-logo"
           width={148}
           height={40}

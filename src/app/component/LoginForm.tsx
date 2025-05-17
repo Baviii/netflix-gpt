@@ -11,7 +11,6 @@ import {
 } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addUser } from "@/utils/userSlice";
 const passwordSchema = z
@@ -44,7 +43,6 @@ type SignUpFormType = z.infer<typeof signUpSchema>;
 type CombinedFormType = SignInFormType | SignUpFormType;
 
 export default function LoginForm() {
-  const router = useRouter();
   const [signInForm, setSigmnInForm] = useState(true);
   const dispatch = useDispatch();
 
@@ -57,20 +55,17 @@ export default function LoginForm() {
     resolver: zodResolver(signInForm ? signInSchema : signUpSchema),
   });
   const onSubmit = (data: CombinedFormType) => {
-    console.log(signInForm ? "Sign In Data" : "Sign Up Data", data);
     if (signInForm) {
       signInWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
           // Signed in
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const user = userCredential.user;
           toast.success("Signed in Sucessfully!");
-          router.push("/browse");
-          console.log({ user });
         })
         .catch((error) => {
           const errorMessage = error.message;
           toast.error(` ${errorMessage}`);
-          router.push("/");
         });
     } else {
       createUserWithEmailAndPassword(auth, data.email, data.password)
@@ -91,13 +86,11 @@ export default function LoginForm() {
               }
 
               toast.success("Signed up Sucessfully!");
-              router.push("/browse");
             })
             .catch((error) => {
               toast.error(error);
             });
 
-          console.log({ user });
           // ...
         })
         .catch((error) => {
