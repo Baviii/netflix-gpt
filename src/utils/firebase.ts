@@ -1,12 +1,9 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "@firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// src/utils/firebase.ts
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { initializeApp } from "firebase/app";
+import { getAnalytics, isSupported } from "firebase/analytics";
+import { getAuth } from "@firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBFNpWMDgFcZIuuSHlMj9bvtkRZxCriWa8",
   authDomain: "netflixgpt-bb129.firebaseapp.com",
@@ -17,8 +14,15 @@ const firebaseConfig = {
   measurementId: "G-09Z55BVJCM",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const analytics = getAnalytics(app);
-export const auth = getAuth();
+
+// Only initialize analytics in the browser
+if (typeof window !== "undefined") {
+  isSupported().then((supported) => {
+    if (supported) {
+      getAnalytics(app);
+    }
+  });
+}
+
+export const auth = getAuth(app);
