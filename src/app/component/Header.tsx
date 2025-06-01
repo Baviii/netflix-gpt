@@ -48,7 +48,6 @@ export default function Header() {
       searchParams.set("gptSearch", "true");
     }
 
-    // Update the URL without reloading the page
     router.replace(`${currentUrl.pathname}?${searchParams.toString()}`);
   };
 
