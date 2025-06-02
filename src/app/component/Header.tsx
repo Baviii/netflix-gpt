@@ -20,6 +20,10 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.user);
+  useEffect(() => {
+    console.log("Header loaded, user in Redux store:", user);
+  }, [user]);
+  console.log({ user });
   const searchParams = useSearchParams();
   const showGptSearch = searchParams.get("gptSearch") === "true";
 
@@ -101,14 +105,15 @@ export default function Header() {
             </select>
           </div>
         ) : null}
-
-        <button
-          className="sm:py-2 sm:px-2 rounded-sm cursor-pointer font-semibold text-13 lg:py-1 lg:px-3 bg-red-400 text-white w-[203px"
-          onClick={handleGptSearch}
-        >
-          {!showGptSearch ? "GPT Search" : "Home page"}
-        </button>
-        {user !== null ? (
+        {user.uuid ? (
+          <button
+            className="sm:py-2 sm:px-2 rounded-sm cursor-pointer font-semibold text-13 lg:py-1 lg:px-3 bg-red-400 text-white w-[203px"
+            onClick={handleGptSearch}
+          >
+            {!showGptSearch ? "GPT Search" : "Home page"}
+          </button>
+        ) : null}
+        {user.uuid ? (
           <button
             className="text-white cursor-pointer font-semiBold text-13 py-1 px-3 bg-[#E50914] rounded-sm"
             onClick={handleSignOut}
