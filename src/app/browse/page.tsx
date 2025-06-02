@@ -34,7 +34,7 @@ async function fetchMovies(endpoint: string) {
   }
 }
 
-export default function Page({ params }: { params: { gptSearch: string } }) {
+export default function Page() {
   const searchParams = useSearchParams();
   const [movies, setMovies] = useState<{
     nowPlaying: MovieData | null;
@@ -49,7 +49,6 @@ export default function Page({ params }: { params: { gptSearch: string } }) {
   });
   const [loading, setLoading] = useState(true);
   const showGptSearch = searchParams.get("gptSearch") === "true";
-  console.log(showGptSearch, "showGptSearch", params);
 
   useEffect(() => {
     const fetchAllMovies = async () => {
