@@ -14,7 +14,7 @@ export default function Login() {
         }}
       >
         <Header />
-        <div className="flex justify-center items-center mt-[10%]">
+        <div className="sm:mt-[50%] flex justify-center items-center lg:mt-[10%]">
           <LoginForm />
         </div>
       </div>

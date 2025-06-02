@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { options } from "@/utils/constant";
 import BannerSection from "../component/BannerSection";
 import MovieWrapper from "../component/MovieWrapper";
-import ClientHeaderWrapper from "../component/ClientHeaderWrapper";
 import GptSearchWrapper from "../component/GptSearchWrapper";
 import { MovieList } from "@/utils/movieData";
 import { useSearchParams } from "next/navigation";
+import Header from "../component/Header";
 
 interface MovieData {
   results: MovieList[];
@@ -101,7 +101,7 @@ export default function Page({ params }: { params: { gptSearch: string } }) {
 
   return (
     <>
-      <ClientHeaderWrapper />
+      <Header />
 
       {showGptSearch ? (
         <GptSearchWrapper />

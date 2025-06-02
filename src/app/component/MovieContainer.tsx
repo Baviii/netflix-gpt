@@ -10,6 +10,7 @@ export default function MovieContainer({
   title: string;
 }) {
   console.log({ movieList });
+
   return (
     <div className="flex flex-col gap-3">
       <span className="text-20 font-bold text-white mt-3">{title}</span>

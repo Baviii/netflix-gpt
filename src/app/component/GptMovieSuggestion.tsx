@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
-import { useSelector } from "react-redux";
 import MovieContainer from "./MovieContainer";
-import { RootState } from "@/utils/appStore";
+// import { MovieList } from "@/utils/movieData";
 // import MovieWrapper from "./MovieWrapper";
 
-export default function GptMovieSuggestion() {
-  const movies = useSelector((store: RootState) => store.movies.movies);
-  const movieName = useSelector((store: RootState) => store.movies.movieName);
-
+export default function GptMovieSuggestion({
+  movies,
+  movieName,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  movies: any[];
+  movieName: string[];
+}) {
   if (!movies) return null;
   console.log({ movies }, { movieName });
   return (

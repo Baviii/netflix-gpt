@@ -5,12 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/utils/firebase";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Netflix_Logo } from "@/utils/constant";
 import { supportedLang } from "@/utils/langConstant";
 import { chooseLang } from "@/utils/configSlice";
+import { addUser } from "@/utils/userSlice";
 // import { toggleGptSearchView } from "@/utils/gptSlice";
 // Adjust the path to your store file
 
@@ -21,6 +22,23 @@ export default function Header() {
   const user = useSelector((store: any) => store.user);
   const searchParams = useSearchParams();
   const showGptSearch = searchParams.get("gptSearch") === "true";
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(
+          addUser({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          })
+        );
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
 
   console.log({ user });
 
@@ -85,7 +103,7 @@ export default function Header() {
         ) : null}
 
         <button
-          className="rounded-sm cursor-pointer font-semibold text-13 py-1 px-3 bg-red-400 text-white w-[203px"
+          className="sm:py-2 sm:px-2 rounded-sm cursor-pointer font-semibold text-13 lg:py-1 lg:px-3 bg-red-400 text-white w-[203px"
           onClick={handleGptSearch}
         >
           {!showGptSearch ? "GPT Search" : "Home page"}

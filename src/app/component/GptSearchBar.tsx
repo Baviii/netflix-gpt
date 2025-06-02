@@ -75,12 +75,12 @@ export default function GptSearchBar() {
           ref={searchText}
           type="text"
           placeholder={lang[langKey].placeholder}
-          className="w-full max-w-[220px] h-[48px] px-3 py-[12px] rounded-[12px] border border-[1.5px] border-lightgray outline-none transition-all duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0px_0px_20px_-18px] hover:border-[2px] hover:border-lightgray hover:shadow-[0px_0px_20px_-17px] text-white active:scale-95 focus:border-[2px] focus:border-gray-500"
+          className="w-full lg:min-w-[420px] h-[48px] px-3 py-[12px] rounded-[12px] border border-[1.5px] border-lightgray outline-none transition-all duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0px_0px_20px_-18px] hover:border-[2px] hover:border-lightgray hover:shadow-[0px_0px_20px_-17px] text-white active:scale-95 focus:border-[2px] focus:border-gray-500"
         />
         <button
           type="submit"
           disabled={loading}
-          className="rounded-sm cursor-pointer font-semibold text-13 px-3 py-[12px] bg-red-400 text-white disabled:opacity-50"
+          className="rounded-sm cursor-pointer font-semibold text-13 px-3 py-[12px] bg-red-700 text-white disabled:opacity-50"
         >
           {loading ? "Loading..." : lang[langKey].searchText}
         </button>
