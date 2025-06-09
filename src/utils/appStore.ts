@@ -5,14 +5,21 @@ import gptReducer from "./gptSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const persistConfig = {
-  key: "root",
+const userPersistConfig = {
+  key: "user",
   storage,
-  whitelist: ["user", "config"], // only these reducers will be persisted
 };
 
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
-const persistedConfigReducer = persistReducer(persistConfig, configReducer);
+const configPersistConfig = {
+  key: "config",
+  storage,
+};
+
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
+const persistedConfigReducer = persistReducer(
+  configPersistConfig,
+  configReducer
+);
 
 export const appStore = configureStore({
   reducer: {

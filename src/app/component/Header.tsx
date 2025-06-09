@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Netflix_Logo } from "@/utils/constant";
 import { supportedLang } from "@/utils/langConstant";
 import { chooseLang } from "@/utils/configSlice";
-import { addUser } from "@/utils/userSlice";
+import { addUser, removeUser } from "@/utils/userSlice";
 // import { toggleGptSearchView } from "@/utils/gptSlice";
 // Adjust the path to your store file
 
@@ -20,10 +20,6 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.user);
-  useEffect(() => {
-    console.log("Header loaded, user in Redux store:", user);
-  }, [user]);
-  console.log({ user });
   const searchParams = useSearchParams();
   const showGptSearch = searchParams.get("gptSearch") === "true";
 
@@ -38,18 +34,19 @@ export default function Header() {
             photoURL: user.photoURL,
           })
         );
+      } else {
+        dispatch(removeUser());
       }
     });
 
     return () => unsubscribe();
   }, [dispatch]);
 
-  console.log({ user });
-
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        router.push("/"); // client side navigation
+        dispatch(removeUser());
+        router.push("/");
       })
       .catch((error) => {
         toast.error(error.message || "Sign out failed");
@@ -63,10 +60,8 @@ export default function Header() {
     const isGptSearch = searchParams.get("gptSearch") === "true";
 
     if (isGptSearch) {
-      // Remove the parameter
       searchParams.delete("gptSearch");
     } else {
-      // Add or update the parameter
       searchParams.set("gptSearch", "true");
     }
 
@@ -75,7 +70,6 @@ export default function Header() {
 
   const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = e.target.value;
-    console.log(selectedId, "selected language id");
     dispatch(chooseLang(selectedId));
   };
 
@@ -105,15 +99,15 @@ export default function Header() {
             </select>
           </div>
         ) : null}
-        {user.uuid ? (
+        {user && user.uid ? (
           <button
-            className="sm:py-2 sm:px-2 rounded-sm cursor-pointer font-semibold text-13 lg:py-1 lg:px-3 bg-red-400 text-white w-[203px"
+            className="sm:py-2 sm:px-2 rounded-sm cursor-pointer font-semibold text-13 lg:py-1 lg:px-3 bg-red-400 text-white w-[203px]"
             onClick={handleGptSearch}
           >
             {!showGptSearch ? "GPT Search" : "Home page"}
           </button>
         ) : null}
-        {user.uuid ? (
+        {user && user.uid ? (
           <button
             className="text-white cursor-pointer font-semiBold text-13 py-1 px-3 bg-[#E50914] rounded-sm"
             onClick={handleSignOut}
